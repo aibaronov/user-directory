@@ -31,19 +31,23 @@ function App() {
     }
     else{
     setIndex(previous => {return (previous - 1)%userArray.length});
-    // setUserInfo(userArray[index]);
     }
+    console.log("previous button clicked");
   }
 
   return (
     
     <div className="App">
-      <h1>User Data:</h1>
-      <Card userData={userInfo}/>
-      <Navigation 
-          nextUserSelect={nextUserSelect} 
-          previousUserSelect={previousUserSelect}
-          />
+      <div className='header'>
+        <h1>Home</h1>
+      </div>
+      <div className='container'>
+        <Card userData={userInfo}/>
+        <Navigation 
+            nextUserSelect={nextUserSelect} 
+            previousUserSelect={previousUserSelect}
+            />
+      </div>
     </div>
     
   );

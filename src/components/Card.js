@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import './Card.css';
 
 
 function Card(props){
@@ -10,7 +11,7 @@ function Card(props){
     const employer = props.userData.employer;
     const movies = props.userData.favoriteMovies;
     return(
-        <div>
+        <div className='Card'>
             <div className='user-id'>{props.userData.id}</div>
             <div className='user-info'>
                 <h2>{firstName} {lastName}</h2>
