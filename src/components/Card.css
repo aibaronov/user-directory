@@ -8,9 +8,21 @@
     padding-left: 30px;
 }
 
+input{
+    border-radius: 5px;
+}
+.sub-entry{
+    width: 50%;
+    float: left;
+}
+
+.submit-button{
+    margin-top:20px;
+}
 .user-id{
     float: right;
 }
+
 
 li{
     margin-left: 40px;
