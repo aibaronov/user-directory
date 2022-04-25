@@ -78,7 +78,6 @@ function App() {
   const nextUserSelect = (event) => {
     event.preventDefault();
     const newIndex = (index+1)%userData.length;
-    console.log(newIndex);
     localStorage.setItem('index', Number(newIndex));
     setIndex(newIndex);
     // setUserInfo(userArray[index]);
@@ -86,8 +85,6 @@ function App() {
   
   const previousUserSelect = (event) => {
     if(index === 0){
-      console.log(userData.length-1)
-      console.log(userData[userData.length-1])
       setIndex(userData.length-1);
       setUserInfo(userData[userData.length-1]);
     }
@@ -107,7 +104,7 @@ function App() {
     setDisplayedComponent('EditForm')
   }
 
-  const formSubmitHandler = (event) => {
+  const newUserHandler = (event) => {
     event.preventDefault();
     console.log('Form submit handler called');
     globalID = userData.length + 1;
@@ -123,9 +120,9 @@ function App() {
     const newUserData = [...userData];
     newUserData.push(createdUser);
     setUserData(newUserData);
-    console.log(userData);
+    setIndex(0);
     setDisplayedComponent('Card');
-    
+  
   }
 
   const editFormHandler = (event) => {
@@ -153,13 +150,12 @@ function App() {
     )
     updateIndex(updatedData);
     setUserData(updatedData);
-    console.log(userData);
-    setUserInfo(userData[index + 1]);
+    setIndex(0);
+    // setUserInfo(userData[index + 1]);
     }
     else{
       return;
     }
-    console.log(userData);
   }
 
   const renderInner = ()=> {
@@ -171,7 +167,7 @@ function App() {
     else if(displayedComponent === 'NewForm'){
       return (
           <NewForm 
-              formSubmit={formSubmitHandler}
+              formSubmit={newUserHandler}
               firstNameHandler={firstNameHandler}
               lastNameHandler={lastNameHandler}
               cityHandler={cityHandler}
