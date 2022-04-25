@@ -15,8 +15,17 @@ function App() {
   const [index, setIndex] = useState(0);
   const [userData, setUserData] = useState(data);
   const [userInfo, setUserInfo] = useState(userData[0]);
+
   const [displayedComponent, setDisplayedComponent] = useState('Card');
 
+
+  // const [firstName, setFirstName] = useState(userInfo ? userInfo.name.first : '');
+  // const [lastName, setLastName] = useState(userInfo ? userInfo.name.last : '');
+  // const [city, setCity] = useState(userInfo ? userInfo.city : '');
+  // const [country, setCountry] = useState(userInfo ? userInfo.country : '');
+  // const [employer, setEmployer] = useState(userInfo ? userInfo.employer : '');
+  // const [title, setTitle] = useState(userInfo ? userInfo.title : '');
+  // const [movies, setMovies] = useState(userInfo ? userInfo.favoriteMovies: []);
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -26,9 +35,19 @@ function App() {
   const [title, setTitle] = useState('');
   const [movies, setMovies] = useState([]);
 
+  const [nameChangeBool, setNameChangeBool] = useState(true);
 
+  const currentUserState = {
+    firstName: firstName,
+    lastName: lastName,
+    city: city,
+    country: country,
+    employer: employer,
+    title: title,
+    movies: movies
+  }
   const firstNameHandler = (event) => {
-      setFirstName(event.target.value);
+    setFirstName(event.target.value)
   }
   const lastNameHandler = (event) =>{
       setLastName(event.target.value);
@@ -52,23 +71,9 @@ function App() {
   }
 
   useEffect(() => {
-    // console.log(newUser);
     setUserInfo(userData[index]);
-    // setUserData(userData);
-    // if(index === userData.length - 1){
-    // setUserInfo(userData[0]);
-    // }
-    // else{
-    // setUserInfo(userData[index]);
-    // }
-  }, [index, userData])
+  }, [index, userData, nameChangeBool])
 
-  // useEffect(() => {
-  //   const getCurrentIndex = localStorage.getItem('index');
-  //   console.log(`Index from useEffect: ${getCurrentIndex}`)
-  //   setIndex(getCurrentIndex);
-  //   console.log(`UpdatedIndex: ${index}`)
-  // }, [index])
 
   const updateIndex = (data) => {
     for(let i = 1; i <= data.length; i++){
@@ -80,7 +85,6 @@ function App() {
     const newIndex = (index+1)%userData.length;
     localStorage.setItem('index', Number(newIndex));
     setIndex(newIndex);
-    // setUserInfo(userArray[index]);
   }
   
   const previousUserSelect = (event) => {
@@ -100,7 +104,6 @@ function App() {
 
   const renderEditUserForm = (event) => {
     event.preventDefault();
-    // setEditUserBool(true);
     setDisplayedComponent('EditForm')
   }
 
@@ -127,15 +130,29 @@ function App() {
 
   const editFormHandler = (event) => {
     event.preventDefault();
-    console.log(userInfo);
-    userInfo.name.first = firstName;
-    userInfo.name.last = lastName;
-    userInfo.city = city;
-    userInfo.country = country;
-    userInfo.title = title;
-    userInfo.employer = employer;
-    userInfo.movies = movies;
+    console.log(`index: ${index}`)
+    // console.log(userInfo);
+    // userInfo.name.first = firstName;
+    // // setFirstName(firstName);
+    // userInfo.name.last = lastName;
+    // userInfo.city = city;
+    // userInfo.country = country;
+    // userInfo.title = title;
+    // userInfo.employer = employer;
+    // userInfo.favoriteMovies = movies;
+    const updatedUser = {
+      id: userInfo.id,
+      name: { first: firstName, last: lastName },
+      city: city,
+      country: country,
+      employer: employer,
+      title: title,
+      favoriteMovies: movies
+    }
+    // setUserInfo(updatedUser);
 
+    userData[index] = updatedUser;
+    setIndex((prev) => {return prev + 1});
     setDisplayedComponent('Card');
 
   }
@@ -151,7 +168,6 @@ function App() {
     updateIndex(updatedData);
     setUserData(updatedData);
     setIndex(0);
-    // setUserInfo(userData[index + 1]);
     }
     else{
       return;
@@ -171,7 +187,7 @@ function App() {
               firstNameHandler={firstNameHandler}
               lastNameHandler={lastNameHandler}
               cityHandler={cityHandler}
-              countryHandler={countryHandler}
+              countryHandler={setCountry}
               employerHandler={employerHandler}
               titleHandler={titleHandler}
               movieHandler={movieHandler}
@@ -183,6 +199,7 @@ function App() {
         <EditForm 
           userData={userInfo}
           formSubmit={editFormHandler}
+          userState={currentUserState}
           firstNameHandler={firstNameHandler}
           lastNameHandler={lastNameHandler}
           cityHandler={cityHandler}
@@ -201,21 +218,7 @@ function App() {
         <h1>Home</h1>
       </div>
       <div className='container'>
-        
-        {/* {newUserBool === true ? 
-          <NewForm 
-          formSubmit={formSubmitHandler}
-          firstNameHandler={firstNameHandler}
-          lastNameHandler={lastNameHandler}
-          cityHandler={cityHandler}
-          countryHandler={countryHandler}
-          employerHandler={employerHandler}
-          titleHandler={titleHandler}
-          movieHandler={movieHandler}/>: 
-          <Card userData={userInfo}/>
-          } */}
           {renderInner()}
-
         <Navigation 
             nextUserSelect={nextUserSelect} 
             previousUserSelect={previousUserSelect}
