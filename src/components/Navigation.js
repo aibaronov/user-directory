@@ -12,7 +12,7 @@ return(
         <button className='next-button' onClick={nextUser}>Next</button>
 
         <div className='edit-buttons'>
-            <button className='edit-button'>Edit</button>
+            <button className='edit-button' onClick={props.editUserForm}>Edit</button>
             <button className='edit-button' onClick={props.deleteUser}>Delete</button>
             <button className='edit-button' onClick={props.newUserForm}>New</button>
         </div>

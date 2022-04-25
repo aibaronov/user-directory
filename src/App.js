@@ -5,6 +5,7 @@ import './App.css';
 import Card from './components/Card';
 import Navigation from './components/Navigation';
 import NewForm from './components/NewForm';
+import EditForm from './components/EditForm';
 import data from './data'
 
 const userArray = data.map((user) => {return user});
@@ -14,7 +15,8 @@ function App() {
   const [index, setIndex] = useState(0);
   const [userData, setUserData] = useState(data);
   const [userInfo, setUserInfo] = useState(userData[0]);
-  const [newUserBool, setNewUserBool] = useState(false);
+  const [displayedComponent, setDisplayedComponent] = useState('Card');
+
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -23,6 +25,7 @@ function App() {
   const [employer, setEmployer] = useState('');
   const [title, setTitle] = useState('');
   const [movies, setMovies] = useState([]);
+
 
   const firstNameHandler = (event) => {
       setFirstName(event.target.value);
@@ -49,39 +52,66 @@ function App() {
   }
 
   useEffect(() => {
-    if(index === userData.length - 1){
-      setUserInfo(userData[0]);
-    }
-    else{
+    // console.log(newUser);
     setUserInfo(userData[index]);
-    }
+    // setUserData(userData);
+    // if(index === userData.length - 1){
+    // setUserInfo(userData[0]);
+    // }
+    // else{
+    // setUserInfo(userData[index]);
+    // }
   }, [index, userData])
 
+  // useEffect(() => {
+  //   const getCurrentIndex = localStorage.getItem('index');
+  //   console.log(`Index from useEffect: ${getCurrentIndex}`)
+  //   setIndex(getCurrentIndex);
+  //   console.log(`UpdatedIndex: ${index}`)
+  // }, [index])
+
+  const updateIndex = (data) => {
+    for(let i = 1; i <= data.length; i++){
+      data[i-1].id = i;
+    }
+  }
   const nextUserSelect = (event) => {
     event.preventDefault();
-    setIndex(previous => {return (previous + 1)%userData.length});
+    const newIndex = (index+1)%userData.length;
+    console.log(newIndex);
+    localStorage.setItem('index', Number(newIndex));
+    setIndex(newIndex);
     // setUserInfo(userArray[index]);
   }
   
   const previousUserSelect = (event) => {
-    if(index < 1){
-      setIndex(userData.length - 1);
-      setUserInfo(userData[index]);
+    if(index === 0){
+      console.log(userData.length-1)
+      console.log(userData[userData.length-1])
+      setIndex(userData.length-1);
+      setUserInfo(userData[userData.length-1]);
     }
     else{
-    setIndex(previous => {return (previous - 1)%userData.length});
+    setIndex(previous => previous-1);
     }
   }
 
   const renderNewUserForm = (event) => {
     event.preventDefault();
-    setNewUserBool(true);
+    setDisplayedComponent('NewForm')
+  }
+
+  const renderEditUserForm = (event) => {
+    event.preventDefault();
+    // setEditUserBool(true);
+    setDisplayedComponent('EditForm')
   }
 
   const formSubmitHandler = (event) => {
     event.preventDefault();
-    globalID++;
-    const newUser = {
+    console.log('Form submit handler called');
+    globalID = userData.length + 1;
+    const createdUser = {
       id: globalID,
       name: { first: firstName, last: lastName },
       city: city,
@@ -90,15 +120,29 @@ function App() {
       title: title,
       favoriteMovies: movies
     }
+    const newUserData = [...userData];
+    newUserData.push(createdUser);
+    setUserData(newUserData);
+    console.log(userData);
+    setDisplayedComponent('Card');
+    
+  }
 
-     setUserData([...userData, newUser]);
-    setNewUserBool(false);
+  const editFormHandler = (event) => {
+    event.preventDefault();
+    console.log(userInfo);
+    userInfo.name.first = firstName;
+    userInfo.name.last = lastName;
+    userInfo.city = city;
+    userInfo.country = country;
+    userInfo.title = title;
+    userInfo.employer = employer;
+    userInfo.movies = movies;
+
+    setDisplayedComponent('Card');
+
   }
-  const updateIndex = (data) => {
-    for(let i = 1; i <= data.length; i++){
-      data[i-1].id = i;
-    }
-  }
+
   const deleteUserHandler = async (event) => {
     event.preventDefault();
     const confirmDelete = await confirm("Are you sure you wish to delete this user?");
@@ -118,6 +162,42 @@ function App() {
     console.log(userData);
   }
 
+  const renderInner = ()=> {
+    if(displayedComponent === 'Card'){
+      return(
+        <Card userData={userInfo}/>
+      )
+    }
+    else if(displayedComponent === 'NewForm'){
+      return (
+          <NewForm 
+              formSubmit={formSubmitHandler}
+              firstNameHandler={firstNameHandler}
+              lastNameHandler={lastNameHandler}
+              cityHandler={cityHandler}
+              countryHandler={countryHandler}
+              employerHandler={employerHandler}
+              titleHandler={titleHandler}
+              movieHandler={movieHandler}
+              />
+      )
+    }
+    else if(displayedComponent === 'EditForm'){
+      return (
+        <EditForm 
+          userData={userInfo}
+          formSubmit={editFormHandler}
+          firstNameHandler={firstNameHandler}
+          lastNameHandler={lastNameHandler}
+          cityHandler={cityHandler}
+          countryHandler={countryHandler}
+          employerHandler={employerHandler}
+          titleHandler={titleHandler}
+          movieHandler={movieHandler}/>
+      )
+    }
+  }
+
   return (
     
     <div className="App">
@@ -125,8 +205,8 @@ function App() {
         <h1>Home</h1>
       </div>
       <div className='container'>
-        {/* <Card userData={userInfo}/> */}
-        {newUserBool === true ? 
+        
+        {/* {newUserBool === true ? 
           <NewForm 
           formSubmit={formSubmitHandler}
           firstNameHandler={firstNameHandler}
@@ -137,11 +217,14 @@ function App() {
           titleHandler={titleHandler}
           movieHandler={movieHandler}/>: 
           <Card userData={userInfo}/>
-          }
+          } */}
+          {renderInner()}
+
         <Navigation 
             nextUserSelect={nextUserSelect} 
             previousUserSelect={previousUserSelect}
             newUserForm = {renderNewUserForm}
+            editUserForm = {renderEditUserForm}
             deleteUser = {deleteUserHandler}
             />
       </div>

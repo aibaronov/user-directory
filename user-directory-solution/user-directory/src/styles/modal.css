@@ -1,0 +1,28 @@
+.modal {
+    width: 25%;
+    height: 45%;
+    background-color: #fff;
+    border: solid 5px #35a5db;
+    position: absolute;
+    left: 50%;
+    top: 52.5%;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    padding: 1%;
+}
+
+.user-form {
+    width: 25%;
+    height: 45%;
+    background-color: #fff;
+    border: solid 5px #35a5db;
+    position: absolute;
+    left: 50%;
+    top: 52.5%;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    padding: 1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

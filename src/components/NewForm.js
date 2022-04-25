@@ -7,8 +7,10 @@ function NewForm(props){
 
     return(
         <div className='Card'>
+            <h1>New User</h1>
             <form className='user-form' onSubmit={props.formSubmit}>
                 <div className='sub-entry'>
+                    
                     <label>First Name: </label><br></br>
                     <input type='text' onChange={props.firstNameHandler}></input><br></br>
 
