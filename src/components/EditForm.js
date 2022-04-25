@@ -13,31 +13,33 @@ function EditForm(props){
     const movies = props.userData.favoriteMovies;
     return(
         <div className='Card'>
-            <h1>Edit User: {firstName} {lastName}</h1>
+            <h1>Edit User: {firstName} {lastName}</h1> 
+            <p>Leave input blank to keep previous value</p>
             <form className='user-form' onSubmit={props.formSubmit}>
                 <div className='sub-entry'>
                     <label>First Name : </label><br></br>
-                    <input type='text' onChange={props.firstNameHandler}></input><br></br>
+                    <input type='text' defaultValue={firstName}
+                     onChange={props.firstNameHandler}></input><br></br>
 
                     <label>Last Name : </label><br></br>
-                    <input type='text'onChange={props.lastNameHandler}></input><br></br>
+                    <input type='text'defaultValue={lastName}vonChange={props.lastNameHandler}></input><br></br>
                     
                     <label>City : </label><br></br>
-                    <input type='text' onChange={props.cityHandler}></input><br></br>
+                    <input type='text' defaultValue={city} onChange={props.cityHandler}></input><br></br>
 
                     <label>Country : </label><br></br>
-                    <input type='text' onChange={e=> props.countryHandler(e.target.value)}></input><br></br>
+                    <input type='text' defaultValue={country} onChange={e=> props.countryHandler(e.target.value)}></input><br></br>
                 </div>
                     
                 <div className='sub-entry'>   
                     <label>Employer : </label><br></br>
-                    <input type='text' onChange={props.employerHandler}></input><br></br>
+                    <input type='text' defaultValue={employer} onChange={props.employerHandler}></input><br></br>
                     
                     <label>Title : </label><br></br>
-                    <input type='text' onChange={props.titleHandler}></input><br></br>
+                    <input type='text' defaultValue ={title} onChange={props.titleHandler}></input><br></br>
                     
                     <label>Movies : </label><br></br>
-                    <input type='text' onChange={props.movieHandler}></input><br></br>
+                    <input type='text' defaultValue={movies}vonChange={props.movieHandler}></input><br></br>
                     <button type='submit' className='submit-button' value='submit'>Submit</button>
                 </div>
             </form>

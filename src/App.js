@@ -27,15 +27,16 @@ function App() {
   // const [title, setTitle] = useState(userInfo ? userInfo.title : '');
   // const [movies, setMovies] = useState(userInfo ? userInfo.favoriteMovies: []);
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [city, setCity] = useState('');
-  const [country, setCountry] = useState('');
-  const [employer, setEmployer] = useState('');
-  const [title, setTitle] = useState('');
-  const [movies, setMovies] = useState([]);
+  const [firstName, setFirstName] = useState(userInfo.name.first);
+  const [lastName, setLastName] = useState(userInfo.name.last);
+  const [city, setCity] = useState(userInfo.city);
+  const [country, setCountry] = useState(userInfo.country);
+  const [employer, setEmployer] = useState(userInfo.employer);
+  const [title, setTitle] = useState(userInfo.title);
+  const [movies, setMovies] = useState(userInfo.favoriteMovies);
 
-  const [nameChangeBool, setNameChangeBool] = useState(true);
+  const [updateBool, setUpdateBool] = useState(false);
+  
 
   const currentUserState = {
     firstName: firstName,
@@ -47,9 +48,11 @@ function App() {
     movies: movies
   }
   const firstNameHandler = (event) => {
+    // setFirstNameBool(true);
     setFirstName(event.target.value)
   }
   const lastNameHandler = (event) =>{
+      
       setLastName(event.target.value);
   }
   const cityHandler = (event) => {
@@ -70,9 +73,6 @@ function App() {
       setMovies(movieArray);
   }
 
-  useEffect(() => {
-    setUserInfo(userData[index]);
-  }, [index, userData, nameChangeBool])
 
 
   const updateIndex = (data) => {
@@ -130,16 +130,8 @@ function App() {
 
   const editFormHandler = (event) => {
     event.preventDefault();
-    console.log(`index: ${index}`)
-    // console.log(userInfo);
-    // userInfo.name.first = firstName;
-    // // setFirstName(firstName);
-    // userInfo.name.last = lastName;
-    // userInfo.city = city;
-    // userInfo.country = country;
-    // userInfo.title = title;
-    // userInfo.employer = employer;
-    // userInfo.favoriteMovies = movies;
+    setUpdateBool(true);
+
     const updatedUser = {
       id: userInfo.id,
       name: { first: firstName, last: lastName },
@@ -210,6 +202,27 @@ function App() {
       )
     }
   }
+
+  useEffect(() => {
+    setUserInfo(userData[index]);
+    // setFirstName(userData[index].name.first)
+    console.log(userInfo);
+  }, [index, userData, updateBool, nextUserSelect, previousUserSelect])
+
+  useEffect(() => {
+    setFirstName(firstName);
+    setLastName(lastName);
+    setCity(city);
+    setCountry(country);
+    setEmployer(employer);
+    setCountry(country);
+    setEmployer(employer);
+    setTitle(title);
+    setMovies(movies);
+    
+    setUpdateBool(false);
+  }, [updateBool])
+
 
   return (
     
