@@ -36,6 +36,7 @@ function App() {
   const [movies, setMovies] = useState(userInfo.favoriteMovies);
 
   const [updateBool, setUpdateBool] = useState(false);
+  const [createNewBool, setCreateNewBool] = useState(false);
   
 
   const currentUserState = {
@@ -110,6 +111,7 @@ function App() {
   const newUserHandler = (event) => {
     event.preventDefault();
     console.log('Form submit handler called');
+    setCreateNewBool(true);
     globalID = userData.length + 1;
     const createdUser = {
       id: globalID,
@@ -120,9 +122,8 @@ function App() {
       title: title,
       favoriteMovies: movies
     }
-    const newUserData = [...userData];
-    newUserData.push(createdUser);
-    setUserData(newUserData);
+    setUserData([...userData, createdUser]);
+    console.log(userData[userData.length-1]);
     setIndex(0);
     setDisplayedComponent('Card');
   
@@ -144,6 +145,7 @@ function App() {
     // setUserInfo(updatedUser);
 
     userData[index] = updatedUser;
+    console.log(updatedUser);
     setIndex((prev) => {return prev + 1});
     setDisplayedComponent('Card');
 
@@ -179,7 +181,7 @@ function App() {
               firstNameHandler={firstNameHandler}
               lastNameHandler={lastNameHandler}
               cityHandler={cityHandler}
-              countryHandler={setCountry}
+              countryHandler={countryHandler}
               employerHandler={employerHandler}
               titleHandler={titleHandler}
               movieHandler={movieHandler}
@@ -206,22 +208,61 @@ function App() {
   useEffect(() => {
     setUserInfo(userData[index]);
     // setFirstName(userData[index].name.first)
-    console.log(userInfo);
-  }, [index, userData, updateBool, nextUserSelect, previousUserSelect])
+  }, [index, userData, nextUserSelect, previousUserSelect])
 
   useEffect(() => {
-    setFirstName(firstName);
-    setLastName(lastName);
-    setCity(city);
-    setCountry(country);
-    setEmployer(employer);
-    setCountry(country);
-    setEmployer(employer);
-    setTitle(title);
-    setMovies(movies);
+    console.log(displayedComponent);
+    if(displayedComponent === 'NewForm'){
+    setUserInfo(userData[0]);
+      setFirstName('');
+      setLastName('');
+      setCity('');
+      setCountry('');
+      setEmployer('');
+      setTitle('');
+      setMovies([]);
+    }
+    else if(displayedComponent === 'EditForm'){
+
+      setFirstName(userInfo.name.first);
+      setLastName(userInfo.name.last);
+      setCity(userInfo.city);
+      setCountry(userInfo.country);
+      setEmployer(userInfo.employer);
+      setTitle(userInfo.title);
+      setMovies(userInfo.favoriteMovies);
+    }
+
+  }, [displayedComponent])
+
+  // useEffect(() => {
+  //   // console.log("update function called");
+  //   // setFirstName(firstName);
+  //   // setLastName(lastName);
+  //   // setCity(city);
+  //   // setCountry(country);
+  //   // setEmployer(employer);
+  //   // setCountry(country);
+  //   // setEmployer(employer);
+  //   // setTitle(title);
+  //   // setMovies(movies);
+
+  //   console.log(displayedComponent);
+  //   if(displayedComponent === 'EditForm'){
+  //   // setUserInfo(userData[0]);
+  //     setFirstName(userData.name.first);
+  //     setLastName('');
+  //     setCity('');
+  //     setCountry('');
+  //     setEmployer('');
+  //     setTitle('');
+  //     setMovies([]);
+  //   }
     
-    setUpdateBool(false);
-  }, [updateBool])
+  //   // setUpdateBool(false);
+  // }, [displayedComponent])
+
+
 
 
   return (

@@ -22,13 +22,13 @@ function EditForm(props){
                      onChange={props.firstNameHandler}></input><br></br>
 
                     <label>Last Name : </label><br></br>
-                    <input type='text'defaultValue={lastName}vonChange={props.lastNameHandler}></input><br></br>
+                    <input type='text'defaultValue={lastName} onChange={props.lastNameHandler}></input><br></br>
                     
                     <label>City : </label><br></br>
                     <input type='text' defaultValue={city} onChange={props.cityHandler}></input><br></br>
 
                     <label>Country : </label><br></br>
-                    <input type='text' defaultValue={country} onChange={e=> props.countryHandler(e.target.value)}></input><br></br>
+                    <input type='text' defaultValue={country} onChange={props.countryHandler}></input><br></br>
                 </div>
                     
                 <div className='sub-entry'>   
@@ -39,7 +39,7 @@ function EditForm(props){
                     <input type='text' defaultValue ={title} onChange={props.titleHandler}></input><br></br>
                     
                     <label>Movies : </label><br></br>
-                    <input type='text' defaultValue={movies}vonChange={props.movieHandler}></input><br></br>
+                    <input type='text' defaultValue={movies}onChange={props.movieHandler}></input><br></br>
                     <button type='submit' className='submit-button' value='submit'>Submit</button>
                 </div>
             </form>
